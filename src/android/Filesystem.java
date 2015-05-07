@@ -80,7 +80,13 @@ public abstract class Filesystem {
             throw new RuntimeException(e);
         }
     }
-
+    // SIDADD
+     /*
+    public JSONObject makeEntryForURL(LocalFilesystemURL inputURL) {
+        Uri nativeUri = toNativeUri(inputURL);
+        return nativeUri == null ? null : makeEntryForURL(inputURL, nativeUri);
+    }*/
+    // /SIDADD
     public JSONObject makeEntryForURL(LocalFilesystemURL inputURL) {
         Uri nativeUri = toNativeUri(inputURL);
         return nativeUri == null ? null : makeEntryForURL(inputURL, nativeUri);
@@ -118,6 +124,23 @@ public abstract class Filesystem {
         }
         return entries;
     }
+    // SIDADD
+    public final JSONArray readFiltredEntriesAtLocalURL(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
+        LocalFilesystemURL[] children = listChildren(inputURL);
+        JSONArray entries = new JSONArray();
+        if (children != null) {
+            for (LocalFilesystemURL url : children) {
+		    //SID: On dois ouvrir le fichier pour chopper la date
+		JSONObject entrie = new JSONObject();
+		File f = new File(filesystemPathForURL(children));
+		entrie = makeEntryForURL(url);
+		entrie.put("lastModifiedDate", file.lastModified());
+                entries.put(entrie);
+            }
+        }
+        return entries;
+    }
+// /SIDADD
 
 	abstract JSONObject getFileMetadataForLocalURL(LocalFilesystemURL inputURL) throws FileNotFoundException;
 

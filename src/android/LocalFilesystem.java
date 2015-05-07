@@ -229,7 +229,40 @@ public class LocalFilesystem extends Filesystem {
 
         return entries;
 	}
+// SIDADD
+    @Override
+    public LocalFilesystemURL[] listFilteredChildren(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
+	    //SIDICI
+        File fp = new File(filesystemPathForURL(inputURL));
+	long start_time=0;
+	long end_time = 1599999999;
+	if(options != null){
+		start_time = options.optLong("start_time");
+       		end_time = options.optLong("end_time");
+	}
 
+
+        if (!fp.exists()) {
+            // The directory we are listing doesn't exist so we should fail.
+            throw new FileNotFoundException();
+        }
+
+        File[] files = fp.listFiles();
+        if (files == null) {
+            // inputURL is a directory
+            return null;
+        }
+        LocalFilesystemURL[] entries = new LocalFilesystemURL[files.length];
+        for (int i = 0; i < files.length; i++) {
+		if(files[i].lastModified() > start_time*1000 && files[i].lastModified() < end_time*1000){
+            		entries[] = URLforFilesystemPath(files[i].getPath());
+		}
+
+        }
+
+        return entries;
+	}
+// /SIDADD
 	@Override
 	public JSONObject getFileMetadataForLocalURL(LocalFilesystemURL inputURL) throws FileNotFoundException {
         File file = new File(filesystemPathForURL(inputURL));
