@@ -485,7 +485,7 @@ public class FileUtils extends CordovaPlugin {
 			threadhelper( new FileOp( ){
 				public void run(JSONArray args) throws FileNotFoundException, JSONException, MalformedURLException {
 					String fname=args.getString(0);
-					JSONArray entries = readFiltredEntries(fname,args.optJSONObject(1));
+					JSONArray entries = readFilteredEntries(fname,args.optJSONObject(1));
 					callbackContext.success(entries);
 				}
 			}, rawArgs, callbackContext);
@@ -671,7 +671,7 @@ public class FileUtils extends CordovaPlugin {
 	 * @throws JSONException
 	 * @throws MalformedURLException 
 	 */
-	private JSONArray readFiltredEntries(String baseURLstr, JSONObject options) throws FileNotFoundException, JSONException, MalformedURLException {
+	private JSONArray readFilteredEntries(String baseURLstr, JSONObject options) throws FileNotFoundException, JSONException, MalformedURLException {
 		try {
 			LocalFilesystemURL inputURL = LocalFilesystemURL.parse(baseURLstr);
 			Filesystem fs = this.filesystemForURL(inputURL);

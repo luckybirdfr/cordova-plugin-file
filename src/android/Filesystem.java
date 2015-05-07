@@ -125,16 +125,17 @@ public abstract class Filesystem {
         return entries;
     }
     // SIDADD
-    public final JSONArray readFiltredEntriesAtLocalURL(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
+    public final JSONArray readFilteredEntriesAtLocalURL(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException , JSONException {
         LocalFilesystemURL[] children = listChildren(inputURL);
         JSONArray entries = new JSONArray();
         if (children != null) {
             for (LocalFilesystemURL url : children) {
 		    //SID: On dois ouvrir le fichier pour chopper la date
 		JSONObject entrie = new JSONObject();
-		File f = new File(filesystemPathForURL(children));
+		File f = new File(filesystemPathForURL(url));
+		//File f = new File(children);
 		entrie = makeEntryForURL(url);
-		entrie.put("lastModifiedDate", file.lastModified());
+		entrie.put("lastModifiedDate", f.lastModified());
                 entries.put(entrie);
             }
         }

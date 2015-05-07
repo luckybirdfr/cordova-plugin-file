@@ -230,7 +230,7 @@ public class LocalFilesystem extends Filesystem {
         return entries;
 	}
 // SIDADD
-    @Override
+    //@Override
     public LocalFilesystemURL[] listFilteredChildren(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
 	    //SIDICI
         File fp = new File(filesystemPathForURL(inputURL));
@@ -253,9 +253,10 @@ public class LocalFilesystem extends Filesystem {
             return null;
         }
         LocalFilesystemURL[] entries = new LocalFilesystemURL[files.length];
+	int j=0;
         for (int i = 0; i < files.length; i++) {
 		if(files[i].lastModified() > start_time*1000 && files[i].lastModified() < end_time*1000){
-            		entries[] = URLforFilesystemPath(files[i].getPath());
+            		entries[j++] = (URLforFilesystemPath(files[i].getPath()));
 		}
 
         }
