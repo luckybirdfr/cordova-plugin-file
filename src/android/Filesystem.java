@@ -113,6 +113,9 @@ public abstract class Filesystem {
 	abstract boolean recursiveRemoveFileAtLocalURL(LocalFilesystemURL inputURL) throws FileExistsException, NoModificationAllowedException;
 
 	abstract LocalFilesystemURL[] listChildren(LocalFilesystemURL inputURL) throws FileNotFoundException;
+	// SIDADD
+	abstract LocalFilesystemURL[] listFilteredChildren(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException;
+	// /SIDADD
 
     public final JSONArray readEntriesAtLocalURL(LocalFilesystemURL inputURL) throws FileNotFoundException {
         LocalFilesystemURL[] children = listChildren(inputURL);
@@ -126,17 +129,17 @@ public abstract class Filesystem {
     }
     // SIDADD
     public final JSONArray readFilteredEntriesAtLocalURL(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException , JSONException {
-        LocalFilesystemURL[] children = listChildren(inputURL);
+        LocalFilesystemURL[] children = listFilteredChildren(inputURL,options);
         JSONArray entries = new JSONArray();
         if (children != null) {
             for (LocalFilesystemURL url : children) {
-		    //SID: On dois ouvrir le fichier pour chopper la date
+	   //SID: On dois ouvrir le fichier pour chopper la date
 		JSONObject entrie = new JSONObject();
 		File f = new File(filesystemPathForURL(url));
-		//File f = new File(children);
 		entrie = makeEntryForURL(url);
 		entrie.put("lastModifiedDate", f.lastModified());
                 entries.put(entrie);
+                //entries.put(makeEntryForURL(url));
             }
         }
         return entries;

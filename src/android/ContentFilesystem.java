@@ -117,6 +117,12 @@ public class ContentFilesystem extends Filesystem {
         throw new UnsupportedOperationException("readEntriesAtLocalURL() not supported for content:. Use resolveLocalFileSystemURL instead.");
     }
 
+// SIDADD
+    @Override
+    public LocalFilesystemURL[] listFilteredChildren(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
+        throw new UnsupportedOperationException("readEntriesAtLocalURL() not supported for content:. Use resolveLocalFileSystemURL instead.");
+    }
+// /SIDADD
 	@Override
 	public JSONObject getFileMetadataForLocalURL(LocalFilesystemURL inputURL) throws FileNotFoundException {
         long size = -1;

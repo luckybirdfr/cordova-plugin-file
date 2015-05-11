@@ -195,6 +195,28 @@ public class AssetFilesystem extends Filesystem {
         return entries;
 	}
 
+// SIDADD
+    @Override
+    public LocalFilesystemURL[] listFilteredChildren(LocalFilesystemURL inputURL,JSONObject options) throws FileNotFoundException {
+        String pathNoSlashes = inputURL.path.substring(1);
+        if (pathNoSlashes.endsWith("/")) {
+            pathNoSlashes = pathNoSlashes.substring(0, pathNoSlashes.length() - 1);
+        }
+
+        String[] files;
+        try {
+            files = listAssets(pathNoSlashes);
+        } catch (IOException e) {
+            throw new FileNotFoundException();
+        }
+
+        LocalFilesystemURL[] entries = new LocalFilesystemURL[files.length];
+        for (int i = 0; i < files.length; ++i) {
+            entries[i] = localUrlforFullPath(new File(inputURL.path, files[i]).getPath());
+        }
+        return entries;
+	}
+// /SIDADD
     @Override
     public JSONObject getFileForLocalURL(LocalFilesystemURL inputURL,
                                          String path, JSONObject options, boolean directory)

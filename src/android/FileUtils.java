@@ -679,7 +679,6 @@ public class FileUtils extends CordovaPlugin {
 				throw new MalformedURLException("No installed handlers for this URL");
 			}
 			return fs.readFilteredEntriesAtLocalURL(inputURL,options);
-
 		} catch (IllegalArgumentException e) {
 			throw new MalformedURLException("Unrecognized filesystem URL");
 		}

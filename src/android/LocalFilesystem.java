@@ -241,7 +241,6 @@ public class LocalFilesystem extends Filesystem {
        		end_time = options.optLong("end_time");
 	}
 
-
         if (!fp.exists()) {
             // The directory we are listing doesn't exist so we should fail.
             throw new FileNotFoundException();
@@ -252,7 +251,17 @@ public class LocalFilesystem extends Filesystem {
             // inputURL is a directory
             return null;
         }
-        LocalFilesystemURL[] entries = new LocalFilesystemURL[files.length];
+int k=0;
+        for (int i = 0; i < files.length; i++) {
+		if(files[i].lastModified() > start_time*1000 && files[i].lastModified() < end_time*1000){
+			k++;
+		}
+	}
+
+
+
+
+        LocalFilesystemURL[] entries = new LocalFilesystemURL[k];
 	int j=0;
         for (int i = 0; i < files.length; i++) {
 		if(files[i].lastModified() > start_time*1000 && files[i].lastModified() < end_time*1000){
