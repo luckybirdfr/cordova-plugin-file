@@ -29,6 +29,15 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+// SIDADD
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.graphics.BitmapFactory;
+import  android.util.Base64;
+import  java.io.ByteArrayOutputStream;
+import  android.media.ThumbnailUtils;
+// /SIDADD
+
 import org.apache.cordova.CordovaResourceApi;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +60,15 @@ public abstract class Filesystem {
 		public void handleData(InputStream inputStream, String contentType) throws IOException;
 	}
 
-    public static JSONObject makeEntryForURL(LocalFilesystemURL inputURL, Uri nativeURL) {
+	public static String BitMapToString(Bitmap bitmap){
+					ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+					bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
+					byte [] b=baos.toByteArray();
+					String temp=Base64.encodeToString(b, Base64.DEFAULT);
+					return temp;
+	}
+
+    public  JSONObject makeEntryForURL(LocalFilesystemURL inputURL, Uri nativeURL) {
         try {
             String path = inputURL.path;
             int end = path.endsWith("/") ? 1 : 0;
@@ -63,6 +80,11 @@ public abstract class Filesystem {
             entry.put("isDirectory", inputURL.isDirectory);
             entry.put("name", fileName);
             entry.put("fullPath", path);
+            if(!inputURL.isDirectory){
+							entry.put("thumb",BitMapToString(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile( filesystemPathForURL(inputURL)), 130, 130)));
+						}else{
+							entry.put("thumb",false);
+						}
             // The file system can't be specified, as it would lead to an infinite loop,
             // but the filesystem name can be.
             entry.put("filesystemName", inputURL.fsName);
