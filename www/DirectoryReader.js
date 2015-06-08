@@ -58,7 +58,6 @@ DirectoryReader.prototype.readFilteredEntries = function(successCallback, errorC
             entry.isFile = result[i].isFile;
             entry.name = result[i].name;
             entry.filename = result[i].name;
-            entry.thumb = result[i].thumb;
             entry.fullPath = result[i].fullPath;
             entry.filesystem = new (require('./FileSystem'))(result[i].filesystemName);
 	    entry.lastModifiedDate = parseInt(result[i].lastModifiedDate/1000); //Added to avoid calling other stuff

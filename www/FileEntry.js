@@ -59,6 +59,26 @@ FileEntry.prototype.createWriter = function(successCallback, errorCallback) {
     }, errorCallback);
 };
 
+
+/**
+ * Returns the thumb.
+ *
+ * @param {Function} successCallback is called with the new File object
+ * @param {Function} errorCallback is called with a FileError
+ */
+
+FileEntry.prototype.thumb = function(successCallback, errorCallback,width,height) {
+    var localURL = this.toInternalURL();
+    var win = successCallback;
+    var fail = errorCallback && function(code) {
+        errorCallback(new FileError(code));
+    };
+    exec(win, fail, "File", "getThumb", [localURL,width,height]);
+};
+
+
+
+
 /**
  * Returns a File that represents the current state of the file that this FileEntry represents.
  *

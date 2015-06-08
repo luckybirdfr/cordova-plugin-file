@@ -62,6 +62,26 @@ function Entry(isFile, isDirectory, name, fullPath, fileSystem, nativeURL) {
  * @param errorCallback
  *            {Function} is called with a FileError
  */
+Entry.prototype.getThumb = function(successCallback, errorCallback,width,height) {
+//    argscheck.checkArgs('FF', 'Entry.getMetadata', arguments);
+    var success = successCallback && function(thumb) {
+        successCallback(thumb);
+    };
+    var fail = errorCallback && function(code) {
+        errorCallback(new FileError(code));
+    };
+    exec(success, fail, "File", "getThumb", [this.toInternalURL(),width,height]);
+};
+
+
+/**
+ * Look up the metadata of the entry.
+ *
+ * @param successCallback
+ *            {Function} is called with a Metadata object
+ * @param errorCallback
+ *            {Function} is called with a FileError
+ */
 Entry.prototype.getMetadata = function(successCallback, errorCallback) {
     argscheck.checkArgs('FF', 'Entry.getMetadata', arguments);
     var success = successCallback && function(entryMetadata) {

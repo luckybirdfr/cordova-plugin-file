@@ -385,6 +385,16 @@ public class FileUtils extends CordovaPlugin {
 				}
 			}, rawArgs, callbackContext);
 		}
+		else if (action.equals("getThumb")) {
+			threadhelper( new FileOp( ){
+				public void run(JSONArray args) throws FileNotFoundException, JSONException, MalformedURLException {
+					String fname=args.getString(0);
+					String thumb = getThumb(fname,args.getInt(1),args.getInt(2));
+					callbackContext.success(thumb);
+				}
+			}, rawArgs, callbackContext);
+		}
+	
 		else if (action.equals("getFileMetadata")) {
 			threadhelper( new FileOp( ){
 				public void run(JSONArray args) throws FileNotFoundException, JSONException, MalformedURLException {
@@ -824,6 +834,26 @@ public class FileUtils extends CordovaPlugin {
 			throw new MalformedURLException("Unrecognized filesystem URL");
 		}
 	}
+
+	/**
+	 * Returns a File that represents the current state of the file that this FileEntry represents.
+	 *
+	 * @return returns a JSONObject represent a W3C File object
+	 */
+	private String getThumb(String baseURLstr,int width,int height) throws FileNotFoundException, MalformedURLException {
+		try {
+			LocalFilesystemURL inputURL = LocalFilesystemURL.parse(baseURLstr);
+			Filesystem fs = this.filesystemForURL(inputURL);
+			if (fs == null) {
+				throw new MalformedURLException("No installed handlers for this URL");
+			}
+			return fs.getThumb(inputURL,width,height);
+
+		} catch (IllegalArgumentException e) {
+			throw new MalformedURLException("Unrecognized filesystem URL");
+		}
+	}
+
 
 	/**
 	 * Returns a File that represents the current state of the file that this FileEntry represents.
